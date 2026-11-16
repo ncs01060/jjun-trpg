@@ -2,7 +2,7 @@ const path = require("node:path");
 // argv로 받은 경로는 cwd 기준으로 풀어야 한다 (require는 이 파일 기준으로 풀기 때문).
 const B = path.resolve(process.cwd(), process.argv[2] || ".tmp-engine");
 const { createGame, advanceYear, resolvePrompt, MAX_AGE } = require(B + "/engine.js");
-const { EVENTS } = require(B + "/content/events.js");
+const { EVENTS } = require(B + "/content/events/index.js");
 const { REGIONS, getRegion } = require(B + "/content/regions.js");
 const { Rng } = require(B + "/rng.js");
 
@@ -27,6 +27,30 @@ function live(seed, _region, chooser) {
 }
 
 const region = REGIONS[0];
+
+// ── 0) 콘텐츠 무결성: 개수, 중복 id, 사진 참조
+{
+  const { PHOTOS } = require(B + "/content/photos.js");
+  const ids = EVENTS.map((e) => e.id);
+  const dupIds = [...new Set(ids.filter((x, i) => ids.indexOf(x) !== i))];
+  const known = new Set(PHOTOS.map((p) => p.id));
+  const badPhotos = new Set();
+  const collect = (o) => {
+    if (!o || typeof o !== "object") return;
+    if (typeof o.photo === "string" && !known.has(o.photo)) badPhotos.add(o.photo);
+    for (const v of Object.values(o)) {
+      if (Array.isArray(v)) v.forEach(collect);
+      else if (v && typeof v === "object") collect(v);
+    }
+  };
+  EVENTS.forEach(collect);
+  const noAge = EVENTS.filter((e) => e.age && (e.age[0] > e.age[1])).map((e) => e.id);
+  console.log("── 콘텐츠 ──");
+  console.log("이벤트:", EVENTS.length, "개 / 사진:", PHOTOS.length, "장");
+  console.log("중복 이벤트 id:", dupIds.length ? dupIds : "없음 ✓");
+  console.log("없는 사진 참조:", badPhotos.size ? [...badPhotos] : "없음 ✓");
+  console.log("나이 구간 뒤집힘:", noAge.length ? noAge : "없음 ✓");
+}
 
 // ── 1) 100생을 돌려서 크래시 / 무한루프 / 미사망 확인
 let deaths = {}, ages = [], noDeath = 0, maxLog = 0, flagSet = new Set();
