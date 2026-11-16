@@ -32,14 +32,11 @@ npm run build        # 프로덕션 빌드
 - 사진을 보려면 원본을 `img/`에 넣고 아래로 웹용을 만드세요.
 
 ```bash
-mkdir -p public/photos
-i=0; for f in img/*; do i=$((i+1))
-  sips -Z 1000 -s format jpeg -s formatOptions 70 "$f" \
-    --out "public/photos/photo-$(printf '%02d' $i).jpg"
-done
+./scripts/photos.sh     # img/ -> public/photos/ (1000px, 영상은 mp4로)
 ```
 
-파일 이름과 `lib/content/photos.ts`의 `photo-NN` 번호가 맞아야 합니다.
+번호는 `img/`를 이름순으로 정렬한 순서입니다. 원본을 추가하면 번호가 밀리므로
+`lib/content/photos.ts`의 매핑도 같이 확인해야 합니다.
 
 ## 구조
 
@@ -49,9 +46,11 @@ lib/
   types.ts          이벤트/상태 스키마 ★ 콘텐츠 작성 시 여기를 본다
   engine.ts         실시간 진행·이벤트 선택·효과 적용·사망 판정
   content/
-    events.ts       이벤트 테이블  ← 작업의 90%가 여기
+    events/         이벤트 525개 ← 작업의 90%가 여기. 테마별 25개 파일
+      index.ts      전부 합쳐서 EVENTS로 내보냄
+      helpers.ts    flavor() / pick2() 단축 함수
     regions.ts      출생지 테이블
-    photos.ts       사진첩 레지스트리 (public/photos/)
+    photos.ts       사진첩 268장 (public/photos/)
 app/
   useGame.ts        rAF 루프를 React에 연결
   components/       TitleScreen · PlayScreen · DeathCard · ChatPhoto · Album
@@ -75,7 +74,8 @@ scripts/smoke.cjs   헤드리스 검증
 
 ## 이벤트 추가하기
 
-`lib/content/events.ts`에 객체 하나 넣으면 끝. 로직은 건드릴 필요 없다.
+맞는 테마 파일에 객체 하나 넣으면 끝. 로직은 건드릴 필요 없다.
+새 테마면 파일을 만들고 `events/index.ts` 배열에 끼워 넣는다.
 
 ```ts
 {
@@ -100,6 +100,13 @@ scripts/smoke.cjs   헤드리스 검증
 }
 ```
 
+한 줄짜리 서술은 헬퍼로 더 짧게 쓴다.
+
+```ts
+flavor("h_f1", [20, 80], 5, "상 차리는 중. 복장은 저게 맞다.", "home_stand", { m: 5 })
+//      id     나이구간   쿨다운  본문                              사진        효과
+```
+
 `eff` 축약키: **h**체력 **m**멘탈 **t**입담 **w**자금 **f**인맥 **r**평판
 그 외 필드: `repeat`/`cooldown`(재발동) `forbids` `rare`(금색 강조) `flagsAdd`
 `death`(즉사 사인) `next`(체인) `flavor`(선택지 없는 서술) `photo`(사진첩에 꽂기)
@@ -120,12 +127,13 @@ scripts/smoke.cjs   헤드리스 검증
 - [x] 엔진 — 실시간 진행, 타이머 선택지, 가중치 결과, 플래그, 사망 판정, 연간 드리프트
 - [x] 결정론 — 같은 시드 + 같은 선택 → 같은 인생 (검증됨)
 - [x] UI — 단톡방 아이덴티티 (방 만들기 / 채팅 피드 / 나감 / 사진 모아보기)
-- [x] 사진 29장 등록, 이벤트 23곳에 연결
-- [x] 이벤트 19개 (준영 소재: 입담, 먹방, 술, 집에서 배 내놓기, 셀카)
-- [ ] 이벤트 증식 — 50개까지는 가야 한 생이 안 겹친다
+- [x] **이벤트 525개** — 테마별 25개 파일
+- [x] **사진 268장** 등록, 그중 261장이 실제로 등장
+- [x] 콘텐츠 무결성 검사 (중복 id, 없는 사진 참조, 나이 구간)
 - [ ] 세이브 슬롯, 지난 삶 기록, 결과 이미지 공유
 - [ ] 출생지 3곳이 아직 일반형 — 준영 실제 배경으로 교체
+- [ ] 선택지 문구를 준영 실제 말투로
 - [ ] **선택지 문구를 준영이 실제로 칠 법한 말로** — 지금은 "걷는다" 같은 행동 서술이라
       말풍선으로 나갈 때 약간 겉돈다. 준영 실제 말투를 받으면 1인칭 대사로 교체
 
-현재 밸런스: 평균 사망 78세 / 중앙값 86 / 한 생당 사진 17장.
+현재 밸런스: 평균 사망 80세 / 중앙값 86 / 한 생당 사진 39장.
