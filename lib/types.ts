@@ -120,7 +120,7 @@ export interface GameEvent {
   text: string;
   choices?: Choice[];
   /** 타이머를 흘려보냈을 때의 결과 */
-  ignore?: { text: string; effects?: Effects; eff?: ShortEffects; tone?: Tone; flagsAdd?: string[] };
+  ignore?: { text: string; effects?: Effects; eff?: ShortEffects; tone?: Tone; flagsAdd?: string[]; photo?: string };
   /** 흘려보내기 버튼 문구 (기본: "흘려보낸다") */
   ignoreLabel?: string;
   /** 선택지가 없는 순수 서술 이벤트 */

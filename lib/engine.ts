@@ -384,6 +384,7 @@ export function resolvePrompt(state: GameState, table: GameEvent[], index: numbe
       tone: ig?.tone ?? "system",
       age: state.age,
       delta,
+      photo: collect(state, ig?.photo),
     });
     saveRng(state, rng);
     return;
