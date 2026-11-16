@@ -1,0 +1,51 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# 엔진 스모크 테스트 산출물
+/.tmp-engine
+
+# 준영 사진 — 공개 저장소에 올리지 않는다.
+# img/            카톡 원본 130MB
+# public/photos/  리사이즈한 웹용 4.8MB (게임이 실제로 읽는 쪽)
+# 로컬에 두고 쓰며, 없으면 UI가 "사진을 불러오지 못했어요"로 대체한다.
+/img
+/public/photos
