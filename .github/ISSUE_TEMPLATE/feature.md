@@ -2,7 +2,7 @@
 name: 기능
 about: 새로 만들 것, 바꿀 것
 title: "feat: "
-labels: ["feature"]
+labels: ["enhancement"]
 assignees: []
 ---
 
