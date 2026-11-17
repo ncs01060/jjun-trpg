@@ -1,0 +1,86 @@
+/** 겉모습. 소품 하나만 생기면 하루 종일 그걸로 산다. */
+import type { GameEvent } from "../../types";
+import { flavor } from "./helpers";
+
+export const LOOKS: GameEvent[] = [
+  { id: "l_wig", age: [16, 60], repeat: true, cooldown: 8, rare: true, photo: "prop_wig1",
+    text: "어디선가 가발이 나왔다. 준영 머리에 올라가기까지 4초 걸렸다.",
+    choices: [
+      { label: "하루 종일 쓰고 다닌다", text: "하루 종일 썼다. 밥 먹을 때도 안 벗었다.", eff: { t: 14, f: 10, r: -8 }, tone: "rare", photo: "prop_wig2" },
+      { label: "사진만 찍고 벗는다", text: "사진을 열 장 찍었다. 전부 포즈가 달랐다.", eff: { t: 10, f: 6 }, photo: "prop_wig4" },
+    ],
+    ignore: { text: "쓴 걸 잊고 밖에 나갔다.", eff: { t: 12, r: -10, f: 8 }, flagsAdd: ["가발사건"] } },
+  { id: "l_shades", age: [16, 70], repeat: true, cooldown: 5, photo: "prop_shades",
+    text: "선글라스를 꺼냈다. 지금은 실내고, 밤이다.",
+    choices: [
+      { label: "쓴다", text: "썼다. 아무도 왜냐고 묻지 않았다. 물어봤자 더 긴 얘기가 나올 걸 알기 때문이다.", eff: { t: 8, r: -5, m: 8 }, tone: "good" },
+      { label: "주머니에 넣는다", text: "넣었다가 10분 뒤에 다시 꺼냈다.", eff: { t: 5 } },
+    ] },
+  { id: "l_hood", age: [12, 60], repeat: true, cooldown: 5, photo: "prop_hood1",
+    text: "후드를 조이기 시작했다. 보통은 여기서 멈춘다.",
+    choices: [
+      { label: "끝까지 조인다", text: "눈만 남았다가 그마저도 사라졌다. 그 상태로 말을 했다.", eff: { t: 12, f: 8, h: -1 }, tone: "good", photo: "prop_hood2" },
+      { label: "적당히 한다", text: "적당한 준영은 어딘가 심심하다.", eff: { r: 3, t: -2 } },
+    ] },
+  { id: "l_helmet", age: [16, 60], repeat: true, cooldown: 7, photo: "prop_helmet1",
+    text: "헬멧을 썼다. 도착하고 나서도 안 벗었다.",
+    choices: [
+      { label: "쓴 채로 음료를 마신다", text: "어떻게든 마셨다. 반은 흘렸다.", eff: { t: 12, h: -2, f: 6 }, tone: "good", photo: "prop_helmet2" },
+      { label: "벗는다", text: "벗고 나니 머리가 눌려 있었다. 그게 더 웃겼다.", eff: { t: 8, r: -3 }, photo: "prop_helmet3" },
+    ] },
+  { id: "l_arab", age: [17, 30], force: true, rare: true, photo: "arab_fest1",
+    text: "축제날이다. 준영이 고른 복장은 머리부터 발끝까지 흰 천이었다.",
+    choices: [
+      { label: "수염까지 그린다", text: "수염은 그린 것이다. 가까이서 보면 더 웃기다.", eff: { t: 16, f: 12, r: -6 }, tone: "rare", flagsAdd: ["축제전설"], photo: "arab_face" },
+      { label: "그냥 입기만 한다", text: "그냥 입기만 했는데도 하루 종일 사진을 찍혔다.", eff: { t: 10, f: 10 }, photo: "arab_walk" },
+    ] },
+  { id: "l_arab_keep", age: [18, 35], requires: ["축제전설"], repeat: true, cooldown: 3, photo: "dc_start",
+    text: "그 복장이 집에 남았다. 준영은 그걸 평상복으로 쓰기 시작했다.",
+    choices: [
+      { label: "화상수업에 입고 들어간다", text: "교수님 화면에도 저게 떴다. 아무도 언급하지 않았다.", eff: { t: 16, r: -8, f: 10 }, tone: "rare", photo: "dc_class2" },
+      { label: "집에서만 입는다", text: "집에서만 입었다. 그래도 매일 입었다.", eff: { m: 10, t: 6 }, photo: "dc_calm" },
+    ],
+    ignore: { text: "입은 채로 잠들었다.", eff: { m: 6, h: 2 } } },
+  { id: "l_suit", age: [19, 70], repeat: true, cooldown: 8, photo: "day_suit",
+    text: "정장을 입어야 하는 날이다. 준영이 정장을 입으면 사람들이 두 번 쳐다본다.",
+    choices: [
+      { label: "끝까지 각 잡는다", text: "그날 하루는 다른 사람이었다. 저녁에 그대로 침대에 누웠다.", eff: { r: 12, m: 8 }, tone: "good", photo: "day_bed" },
+      { label: "넥타이를 머리에 맨다", text: "10분 만에 원래대로 돌아왔다.", eff: { t: 12, r: -8, f: 8 } },
+    ] },
+  { id: "l_glasses", age: [14, 70], repeat: true, cooldown: 6, photo: "prop_glass1",
+    text: "안경을 바꿨다. 동그란 거였다.",
+    choices: [
+      { label: "그대로 쓰고 다닌다", text: "본인은 잘 어울린다고 생각했다. 그걸로 충분했다.", eff: { m: 8, t: 5, r: -3 } },
+      { label: "하트 모양으로 바꾼다", text: "하트 모양이었다. 그걸 쓰고 밖에 나갔다.", eff: { t: 12, r: -6, f: 6 }, tone: "good", photo: "prop_heart" },
+    ] },
+  { id: "l_alien", age: [16, 50], repeat: true, cooldown: 9, rare: true, photo: "prop_alien1",
+    text: "외계인 안경이 나왔다. 어디서 났는지는 아무도 모른다.",
+    choices: [
+      { label: "쓰고 수업에 들어간다", text: "저걸 쓰고 수업을 들었다. 한 시간 내내.", eff: { t: 16, r: -10, f: 10 }, tone: "rare", photo: "prop_alien2" },
+      { label: "수건이랑 같이 쓴다", text: "이 조합은 본인도 설명을 못 했다.", eff: { t: 14, f: 8 }, tone: "rare", photo: "prop_alien3" },
+    ] },
+  { id: "l_leg", age: [17, 40], repeat: true, cooldown: 10, rare: true, photo: "leg_1",
+    text: "어쩌다 망사스타킹이 생겼다. 준영은 그걸 신어 보기로 했다.",
+    choices: [
+      { label: "신고 밖에 나간다", text: "친구가 말렸지만 소용없었다. 결국 하루 종일 저러고 다녔다.", eff: { t: 18, f: 10, r: -14 }, tone: "rare", flagsAdd: ["다리사건"], photo: "leg_2" },
+      { label: "집에서만 신는다", text: "본인은 편하다고 했다.", eff: { t: 10, m: 6 }, photo: "leg_5" },
+    ],
+    ignore: { text: "신은 채로 잊고 있다가 택배를 받았다.", eff: { t: 14, r: -10, f: 8 } } },
+  { id: "l_mask", age: [18, 70], repeat: true, cooldown: 7, flavor: true, photo: "prop_mask",
+    text: "마스크팩을 했다. 그 상태로 사진을 찍어서 단톡방에 올렸다.", eff: { t: 6, f: 4, h: 2 } },
+  flavor("l_f1", [14, 70], 5, "머리띠로 눈을 가렸다. 그대로 걸어가다 벽에 부딪혔다.", "prop_band1", { t: 6, h: -2 }),
+  flavor("l_f2", [14, 70], 6, "머리띠는 자주 등장한다. 용도는 매번 다르다.", "day_band2", { t: 5 }),
+  flavor("l_f3", [16, 70], 6, "거울이 달린 선글라스를 샀다. 본인 얼굴이 두 개 보인다.", "prop_shades2", { t: 6, w: -3 }),
+  flavor("l_f4", [16, 70], 7, "이 사진은 본인이 제일 좋아한다.", "prop_denim", { m: 7, t: 4 }),
+  flavor("l_f5", [16, 70], 7, "이날은 옷을 신경 썼다. 아주 드문 날이다.", "day_denim2", { r: 6, m: 5 }),
+  flavor("l_f6", [16, 70], 8, "모자를 눌러쓰면 대화가 줄어든다고 믿는다.", "day_cap", { m: 4 }),
+  flavor("l_f7", [16, 70], 8, "안 들린다고 했다. 들리고 있었다.", "prop_ear", { t: 5, f: 3 }),
+  flavor("l_f8", [16, 70], 9, "머리를 만지는 중이었다. 30분째였다.", "prop_hair", { m: 4, t: 3 }),
+  flavor("l_f9", [16, 70], 9, "전화 받는 척을 했다. 전화는 안 왔다.", "prop_call", { t: 6, f: 3 }),
+  flavor("l_f10", [16, 70], 9, "이게 무슨 포즈냐고 물었더니 대답을 안 했다.", "prop_claw", { t: 6 }),
+  flavor("l_f11", [18, 40], 6, "축제 복장 그대로 운동장 한가운데 서 있었다.", "arab_stand", { t: 6, f: 4 }),
+  flavor("l_f12", [18, 40], 6, "더워 죽겠다면서 끝까지 안 벗었다.", "arab_rest", { t: 7, h: -3 }),
+  flavor("l_f13", [18, 40], 7, "저 복장으로 게임도 했다.", "arab_game", { t: 6, m: 4 }),
+  flavor("l_f14", [18, 40], 7, "뒷모습도 저렇다.", "arab_back", { t: 5 }),
+  flavor("l_f15", [18, 40], 8, "둘이서 저러고 다녔다. 말린 사람은 없었다.", "arab_two", { t: 6, f: 5 }),
+];

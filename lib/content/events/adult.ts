@@ -1,0 +1,111 @@
+/** 성인 24~50세. 웃기는 게 더 이상 공짜가 아닌 시기. */
+import type { GameEvent } from "../../types";
+import { flavor } from "./helpers";
+
+export const ADULT: GameEvent[] = [
+  { id: "a_health", age: [30, 90], repeat: true, cooldown: 6,
+    text: "건강검진 결과지에 빨간 줄이 하나 있었다. 준영은 그걸로 농담을 하나 만들었고, 그 농담을 아무한테도 안 했다.",
+    choices: [
+      { label: "병원에 간다", text: "일찍 와서 다행이라고 했다. 준영은 의사 앞에서도 한 번 웃겼다. 의사가 웃었다.", eff: { h: 12, w: -8, t: 4 }, tone: "good" },
+      { label: "농담으로 덮는다", needs: { wit: 65 }, outcomes: [
+        { w: 50, text: "다들 웃었고 아무도 더 안 물었다. 준영이 원한 게 정확히 그거였다.", eff: { t: 8, f: 6, h: -10 }, photo: "face_grin" },
+        { w: 50, text: "한 명이 안 웃었다. 그 사람이 다음 날 병원 예약을 대신 잡아 줬다.", eff: { h: 8, f: 12, m: 10 }, tone: "rare", flagsAdd: ["끝까지챙겨준사람"] },
+      ] },
+      { label: "서랍에 넣는다", text: "닫았다. 닫히는 소리가 평소보다 크게 들렸다.", eff: { h: -12, m: -5 }, tone: "bad" },
+    ],
+    ignore: { text: "결과지가 식탁 위에서 일주일을 보냈다.", eff: { h: -7 } } },
+  { id: "a_alone_night", age: [25, 70], repeat: true, cooldown: 5,
+    text: "집에 혼자 있는 밤이다. 오늘은 웃길 사람이 없다.",
+    choices: [
+      { label: "단톡방을 연다", text: "아무나 붙잡고 떠들었다. 두 시간이 갔다.", eff: { f: 8, m: 10, h: -3 }, tone: "good" },
+      { label: "그냥 잔다", text: "일찍 잤다. 드문 일이라 다음 날 컨디션이 좋았다.", eff: { h: 10, m: 4 } },
+      { label: "혼자 떠든다", text: "혼자서도 웃겼다. 그게 조금 슬프고 조금 멋있었다.", eff: { m: 8, t: 6 }, photo: "dc_laugh" },
+    ] },
+  { id: "a_marry", age: [28, 45], major: true, rare: true,
+    text: "결혼 얘기가 나왔다. 준영이 농담을 안 하고 있다. 아주 드문 일이다.",
+    choices: [
+      { label: "한다", text: "식장에서도 사회자보다 준영이 더 웃겼다. 울기도 했다.", eff: { m: 22, f: 14, w: -18 }, tone: "rare", flagsAdd: ["가정"] },
+      { label: "지금은 아니라고 한다", text: "지금은 아니라고 했다. 그 말을 하는 데 오래 걸렸다.", eff: { m: -8, w: 8 } },
+    ] },
+  { id: "a_child", age: [30, 48], requires: ["가정"], major: true, rare: true,
+    text: "아이가 생겼다. 준영은 처음으로 자기가 웃기지 않아도 되는 사람을 만났다.",
+    choices: [
+      { label: "그래도 웃긴다", text: "아이가 제일 잘 웃어 줬다. 준영의 인생 최고 관객이었다.", eff: { m: 24, t: 10, w: -12, h: -4 }, tone: "rare", flagsAdd: ["아이"] },
+      { label: "그냥 안고 있는다", text: "아무 말도 안 하고 한참 안고 있었다.", eff: { m: 20, w: -12 }, tone: "rare", flagsAdd: ["아이"] },
+    ] },
+  { id: "a_kid_joke", age: [34, 65], requires: ["아이"], repeat: true, cooldown: 3,
+    text: "아이가 준영의 농담을 따라 했다. 밖에서, 아주 큰 소리로.",
+    choices: [
+      { label: "같이 한다", text: "둘이 같이 하니까 더 심해졌다. 배우자가 멀리 떨어져 걸었다.", eff: { t: 10, m: 12, r: -8 }, tone: "good" },
+      { label: "말린다", text: "말리면서도 웃음을 참느라 얼굴이 이상해졌다.", eff: { m: 10, r: 4 }, photo: "dc_serious" },
+    ] },
+  { id: "a_parent", age: [30, 70], repeat: true, cooldown: 6,
+    text: "부모님이 늙어 보였다. 준영은 그걸 그날 처음 알아차렸다.",
+    choices: [
+      { label: "전화를 건다", text: "할 말이 없어서 농담만 하다 끊었다. 그래도 목소리는 밝았다.", eff: { m: 12, f: 6 }, tone: "good" },
+      { label: "찾아간다", text: "밥을 같이 먹었다. 평소보다 천천히 먹었다.", eff: { m: 16, w: -6, h: 3 }, tone: "rare" },
+      { label: "다음에 하기로 한다", text: "다음은 생각보다 멀었다.", eff: { m: -8 } },
+    ],
+    ignore: { text: "전화를 들었다 놨다 했다.", eff: { m: -5 } } },
+  { id: "a_old_friend", age: [30, 70], repeat: true, cooldown: 7,
+    text: "연락이 끊겼던 친구에게서 메시지가 왔다. 10년 만이다.",
+    choices: [
+      { label: "바로 답한다", text: "10년이 없었던 것처럼 떠들었다. 두 시간이 갔다.", eff: { f: 16, m: 14 }, tone: "rare", flagsAdd: ["오래간사람들"] },
+      { label: "읽고 미룬다", text: "미루다가 답할 타이밍을 놓쳤다.", eff: { m: -8, f: -4 } },
+    ],
+    ignore: { text: "읽기만 했다.", eff: { m: -6 } } },
+  { id: "a_burnout", age: [28, 60], repeat: true, cooldown: 7, major: true,
+    text: "웃기는 게 힘들어졌다. 준영에게 이건 꽤 심각한 일이다.",
+    choices: [
+      { label: "그래도 한다", text: "억지로 했다. 아무도 눈치 못 챘다. 그게 제일 외로웠다.", eff: { t: 4, m: -14, f: 4 }, tone: "bad" },
+      { label: "쉰다", text: "한 달 동안 조용했다. 다들 걱정했고, 준영은 그게 고마웠다.", eff: { m: 14, h: 8, f: 6 }, tone: "rare", flagsAdd: ["한번쉬었다"] },
+      { label: "누구한테 말한다", text: "처음으로 힘들다고 말했다. 듣던 사람이 아무 말 없이 밥을 시켰다.", eff: { m: 18, f: 14 }, tone: "rare", flagsAdd: ["진짜친구"] },
+    ] },
+  { id: "a_move", age: [25, 55], repeat: true, cooldown: 9,
+    text: "이사를 한다. 짐을 싸다가 옛날 사진이 나왔다.",
+    choices: [
+      { label: "한참 본다", text: "짐 싸는 걸 멈추고 두 시간을 봤다. 전부 얼굴이 이상한 사진이었다.", eff: { m: 14, t: 6 }, tone: "rare", photo: "face_tilt" },
+      { label: "일단 넣는다", text: "박스에 넣고 나중에 보기로 했다. 그 박스는 다음 이사까지 안 열렸다.", eff: { m: 5, w: -6 } },
+    ] },
+  { id: "a_sick_bad", age: [35, 80], repeat: true, cooldown: 8, needs: { health: 1 },
+    text: "크게 아팠다. 누워 있는 동안 준영은 아무 말도 안 했다.",
+    choices: [
+      { label: "버틴다", outcomes: [
+        { w: 65, text: "나았다. 일어나자마자 농담부터 했다.", eff: { h: -8, m: 8, t: 6 }, tone: "good" },
+        { w: 35, text: "오래 갔다. 그 뒤로 몸이 예전 같지 않았다.", eff: { h: -20, m: -8 }, tone: "bad" },
+      ] },
+      { label: "제대로 치료받는다", text: "돈은 들었지만 제대로 나았다.", eff: { h: 14, w: -16 }, tone: "good" },
+    ] },
+  { id: "a_money_ok", age: [30, 60], needs: { money: 70 }, repeat: true, cooldown: 10, rare: true,
+    text: "처음으로 통장에 여유가 생겼다. 준영은 그 숫자를 세 번 확인했다.",
+    choices: [
+      { label: "친구들을 전부 부른다", text: "그날 밤이 또 하나의 전설이 됐다.", eff: { w: -20, f: 20, t: 8 }, tone: "rare", photo: "eat_night" },
+      { label: "부모님께 드린다", text: "받지 않으려 해서 몰래 넣어 두고 왔다.", eff: { w: -18, m: 20 }, tone: "rare" },
+      { label: "그냥 둔다", text: "그냥 뒀다. 통장을 보는 게 취미가 됐다.", eff: { m: 8, w: 4 } },
+    ] },
+  { id: "a_night_road", age: [20, 70], weight: 0.35, repeat: true, cooldown: 18,
+    text: "새벽에 비가 왔다. 신호가 길고, 차도 사람도 없다. 준영은 이미 한 발을 내밀었다.",
+    choices: [
+      { label: "그냥 건넌다", outcomes: [
+        { w: 90, text: "아무 일도 없었다. 다 건너고 나서 혼자 웃었다.", eff: { m: 4 } },
+        { w: 10, text: "헤드라이트가 아주 늦게 보였다.", death: "사고", tone: "bad" },
+      ] },
+      { label: "기다린다", text: "2분을 서서 비를 다 맞았다. 그동안 농담을 세 개 만들었다.", eff: { h: -2, t: 4 } },
+    ],
+    ignore: { text: "결국 다 기다렸다.", eff: { h: -2 } } },
+  flavor("a_f1", [24, 70], 4, "퇴근길에 아무 이유 없이 멀리 돌아서 걸었다.", "out_cross", { m: 5, h: 2 }),
+  flavor("a_f2", [24, 70], 5, "카페 창가 자리를 좋아한다. 같은 자리에 또 앉았다.", "cafe_1", { m: 5 }),
+  flavor("a_f3", [24, 70], 6, "같은 자리에서 또 찍었다. 각도도 같았다.", "cafe_2", { t: 4 }),
+  flavor("a_f4", [24, 70], 6, "뒤에 친구가 지나가서 결국 둘 다 나왔다.", "cafe_4", { f: 5, t: 3 }),
+  flavor("a_f5", [25, 70], 6, "벤치에 저러고 앉아 있었다. 한 시간째였다.", "out_bench", { m: 6 }),
+  flavor("a_f6", [24, 70], 7, "바다까지 갔다. 가서는 아무것도 안 했다.", "out_sea1", { m: 8, h: 2 }),
+  flavor("a_f7", [24, 70], 7, "파도를 향해 뭐라고 외쳤다. 내용은 아무도 못 들었다.", "out_sea3", { m: 10, t: 5 }),
+  flavor("a_f8", [24, 70], 8, "모래에 앉아서 한참 있었다.", "out_sea2", { m: 7 }),
+  flavor("a_f9", [24, 70], 5, "길에서 혼자 웃었다. 지나가던 사람이 쳐다봤다.", "out_laugh", { t: 5, r: -2 }),
+  flavor("a_f10", [24, 70], 6, "뭘 보는지 모르겠는 표정으로 서 있었다.", "out_look", { m: 4 }),
+  flavor("a_f11", [24, 70], 6, "드물게 멀쩡한 사진이 한 장 나왔다.", "day_calm", { r: 6, m: 5 }),
+  flavor("a_f12", [24, 70], 7, "엄지를 들었다. 전부 괜찮다는 뜻이다.", "day_thumbs", { m: 6, f: 4 }),
+  flavor("a_f13", [24, 70], 8, "이 사진은 본인이 골랐다. 이유는 안 말했다.", "day_jacket", { m: 6 }),
+  flavor("a_f14", [24, 70], 8, "비눗방울이 지나갔다. 사진에 같이 찍혔다.", "day_bubble", { m: 6, t: 3 }),
+  flavor("a_f15", [30, 80], 9, "거울을 보다가 아버지 얼굴이 보였다.", "day_face1", { m: 7 }),
+];
