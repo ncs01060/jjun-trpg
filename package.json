@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:engine": "tsc lib/rng.ts lib/types.ts lib/engine.ts lib/content/events.ts lib/content/regions.ts lib/content/photos.ts --outDir .tmp-engine --module commonjs --target es2020 --moduleResolution node --skipLibCheck --esModuleInterop && node scripts/smoke.cjs .tmp-engine"
+    "test:engine": "tsc lib/rng.ts lib/types.ts lib/engine.ts lib/content/regions.ts lib/content/photos.ts lib/content/events/*.ts --outDir .tmp-engine --module commonjs --target es2020 --moduleResolution node --skipLibCheck --esModuleInterop && node scripts/smoke.cjs .tmp-engine"
   },
   "dependencies": {
     "next": "16.4.6",
